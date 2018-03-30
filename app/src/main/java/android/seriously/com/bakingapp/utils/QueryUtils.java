@@ -46,6 +46,9 @@ public final class QueryUtils {
     private static final String JSON_RECIPE_STEP_KEY_VIDEO_URL = "videoURL";
     private static final String JSON_RECIPE_STEP_KEY_THUMBNAIL_URL = "thumbnailURL";
 
+    private QueryUtils() {
+    }
+
     public static List<Recipe> fetchRecipesData() {
         URL url = createUrl(RECIPE_LISTING_URL);
 

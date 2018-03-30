@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BakingApp</string>
+    <string name="recipe_icon_content_desc">Recipe icon</string>
 </resources>

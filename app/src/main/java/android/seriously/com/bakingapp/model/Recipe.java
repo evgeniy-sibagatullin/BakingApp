@@ -6,12 +6,12 @@ import java.util.List;
 
 public class Recipe {
 
-    private final String id;
+    private final int id;
     private final String name;
     private final List<Ingredient> ingredients;
     private final List<RecipeStep> recipeSteps;
 
-    public Recipe(@NonNull String id, @NonNull String name, @NonNull List<Ingredient> ingredients,
+    public Recipe(int id, @NonNull String name, @NonNull List<Ingredient> ingredients,
                   @NonNull List<RecipeStep> recipeSteps) {
         this.id = id;
         this.name = name;
@@ -19,7 +19,7 @@ public class Recipe {
         this.recipeSteps = recipeSteps;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
@@ -43,7 +43,7 @@ public class Recipe {
 
         Recipe recipe = (Recipe) o;
 
-        if (!id.equals(recipe.id)) return false;
+        if (id != recipe.id) return false;
         if (!name.equals(recipe.name)) return false;
         if (!ingredients.equals(recipe.ingredients)) return false;
         return recipeSteps.equals(recipe.recipeSteps);
@@ -51,7 +51,7 @@ public class Recipe {
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
+        int result = id;
         result = 31 * result + name.hashCode();
         result = 31 * result + ingredients.hashCode();
         result = 31 * result + recipeSteps.hashCode();

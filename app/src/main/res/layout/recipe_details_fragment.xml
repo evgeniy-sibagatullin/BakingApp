@@ -2,20 +2,41 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPrimaryDark"
+        android:orientation="vertical"
         android:padding="@dimen/padding_default">
 
         <TextView
-            android:id="@+id/recipe_name"
+            android:id="@+id/recipe_ingredients"
+            style="@style/textBoldCapsCenter"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textAllCaps="true"
-            android:textStyle="bold"/>
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_default"
+            android:background="@android:color/white"
+            android:foreground="?attr/selectableItemBackground"
+            android:padding="@dimen/padding_big"
+            android:text="@string/recipe_ingredients"/>
 
-    </FrameLayout>
+        <TextView
+            android:id="@+id/recipe_steps"
+            style="@style/textBoldCapsCenter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_default"
+            android:padding="@dimen/padding_default"
+            android:text="@string/recipe_steps"
+            android:textColor="@android:color/white"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_default"
+            android:background="@android:color/white"/>
+
+    </LinearLayout>
 
 </layout>

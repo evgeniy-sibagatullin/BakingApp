@@ -1,7 +1,7 @@
 package android.seriously.com.bakingapp.adapter;
 
 import android.content.Context;
-import android.seriously.com.bakingapp.databinding.RecipeCardBinding;
+import android.seriously.com.bakingapp.databinding.RecipeCardItemBinding;
 import android.seriously.com.bakingapp.model.Recipe;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -36,7 +36,7 @@ public class RecipeCardsAdapter extends RecyclerView.Adapter<RecipeCardsAdapter.
     @Override
     public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        RecipeCardBinding binding = RecipeCardBinding.inflate(inflater, parent, false);
+        RecipeCardItemBinding binding = RecipeCardItemBinding.inflate(inflater, parent, false);
         return new RecipeViewHolder(binding);
     }
 
@@ -52,9 +52,9 @@ public class RecipeCardsAdapter extends RecyclerView.Adapter<RecipeCardsAdapter.
 
     class RecipeViewHolder extends RecyclerView.ViewHolder {
 
-        private RecipeCardBinding binding;
+        private RecipeCardItemBinding binding;
 
-        RecipeViewHolder(RecipeCardBinding binding) {
+        RecipeViewHolder(RecipeCardItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

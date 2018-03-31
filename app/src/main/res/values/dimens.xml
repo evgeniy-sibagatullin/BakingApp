@@ -2,4 +2,5 @@
 <resources>
     <dimen name="margin_default">8dp</dimen>
     <dimen name="padding_default">8dp</dimen>
+    <dimen name="padding_big">16dp</dimen>
 </resources>

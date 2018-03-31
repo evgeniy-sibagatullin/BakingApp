@@ -30,13 +30,11 @@
 
             <TextView
                 android:id="@+id/card_recipe_name"
+                style="@style/textBoldCapsCenter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_default"
-                android:gravity="center"
-                android:padding="@dimen/padding_default"
-                android:textAllCaps="true"
-                android:textStyle="bold"/>
+                android:padding="@dimen/padding_default"/>
 
         </LinearLayout>
 

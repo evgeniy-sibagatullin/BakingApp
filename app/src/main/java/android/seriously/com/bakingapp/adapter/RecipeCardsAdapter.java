@@ -6,12 +6,17 @@ import android.seriously.com.bakingapp.model.Recipe;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeCardsAdapter extends RecyclerView.Adapter<RecipeCardsAdapter.RecipeViewHolder> {
+
+    public interface Listener {
+        void onRecipeCardSelected(Recipe recipe);
+    }
 
     private Context context;
     private final List<Recipe> recipes = new ArrayList<>();
@@ -54,8 +59,14 @@ public class RecipeCardsAdapter extends RecyclerView.Adapter<RecipeCardsAdapter.
             this.binding = binding;
         }
 
-        void bind(Recipe recipe) {
+        void bind(final Recipe recipe) {
             binding.cardRecipeName.setText(recipe.getName());
+            binding.cardRecipeContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((Listener) context).onRecipeCardSelected(recipe);
+                }
+            });
         }
     }
 }

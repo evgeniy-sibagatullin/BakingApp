@@ -2,7 +2,9 @@ package android.seriously.com.bakingapp.model;
 
 import android.support.annotation.NonNull;
 
-public class RecipeStep {
+import java.io.Serializable;
+
+public class RecipeStep implements Serializable {
 
     private final int id;
     private final String shortDesc;

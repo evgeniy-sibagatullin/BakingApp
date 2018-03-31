@@ -2,9 +2,10 @@ package android.seriously.com.bakingapp.model;
 
 import android.support.annotation.NonNull;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Recipe {
+public class Recipe implements Serializable {
 
     private final int id;
     private final String name;

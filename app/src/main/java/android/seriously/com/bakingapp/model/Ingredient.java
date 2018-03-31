@@ -2,7 +2,9 @@ package android.seriously.com.bakingapp.model;
 
 import android.support.annotation.NonNull;
 
-public class Ingredient {
+import java.io.Serializable;
+
+public class Ingredient implements Serializable {
 
     private final int quantity;
     private final String measure;

@@ -17,7 +17,7 @@ import android.widget.TextView;
 import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP;
 import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP_ID_BEFORE;
 import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP_ID_NEXT;
-import static android.view.View.GONE;
+import static android.view.View.INVISIBLE;
 
 @SuppressWarnings("ConstantConditions")
 public class RecipeStepDetailsFragment extends Fragment {
@@ -26,6 +26,8 @@ public class RecipeStepDetailsFragment extends Fragment {
 
     public interface Listener {
         void onNavigationButtonPressed(int recipeStepToBeOpenedId);
+
+        void onBackToListButtonPressed();
     }
 
     private RecipeStep recipeStep;
@@ -52,6 +54,7 @@ public class RecipeStepDetailsFragment extends Fragment {
     private void setupNavigationButtons(RecipeStepDetailsFragmentBinding binding) {
         setupNavigationButton(binding.navigateBefore, BUNDLE_KEY_RECIPE_STEP_ID_BEFORE);
         setupNavigationButton(binding.navigateNext, BUNDLE_KEY_RECIPE_STEP_ID_NEXT);
+        setupBackToListButton(binding.backToList);
     }
 
     private void setupNavigationButton(ImageView navigationButton, final String key) {
@@ -64,7 +67,16 @@ public class RecipeStepDetailsFragment extends Fragment {
                 }
             });
         } else {
-            navigationButton.setVisibility(GONE);
+            navigationButton.setVisibility(INVISIBLE);
         }
+    }
+
+    private void setupBackToListButton(ImageView expandLessButton) {
+        expandLessButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((Listener) getContext()).onBackToListButtonPressed();
+            }
+        });
     }
 }

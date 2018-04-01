@@ -44,6 +44,21 @@
                 android:layout_weight="1"/>
 
             <ImageView
+                android:id="@+id/back_to_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:contentDescription="@string/back_to_list"
+                android:foreground="?attr/selectableItemBackground"
+                android:padding="@dimen/padding_big"
+                android:src="@drawable/ic_expand_less_black_24dp"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
+            <ImageView
                 android:id="@+id/navigate_next"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

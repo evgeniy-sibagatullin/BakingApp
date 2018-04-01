@@ -66,6 +66,14 @@ public class RecipeDetailsActivity extends AppCompatActivity implements
         }
     }
 
+    @Override
+    public void onBackToListButtonPressed() {
+        //noinspection StatementWithEmptyBody
+        while (getSupportFragmentManager().popBackStackImmediate()) ;
+
+        openRecipeDetailsFragment();
+    }
+
     private void openRecipeDetailsFragment() {
         Bundle args = prepareBasicArgs(BUNDLE_KEY_RECIPE, getIntent().getSerializableExtra(BUNDLE_KEY_RECIPE));
         RecipeDetailsFragment fragment = (RecipeDetailsFragment) Fragment.instantiate(this,

@@ -11,14 +11,24 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP;
+import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP_ID_BEFORE;
+import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP_ID_NEXT;
+import static android.view.View.GONE;
 
 @SuppressWarnings("ConstantConditions")
 public class RecipeStepDetailsFragment extends Fragment {
 
     public static final String TAG = RecipeStepDetailsFragment.class.getSimpleName();
+
+    public interface Listener {
+        void onNavigationButtonPressed(int recipeStepToBeOpenedId);
+    }
+
+    private RecipeStep recipeStep;
 
     @Nullable
     @Override
@@ -27,13 +37,34 @@ public class RecipeStepDetailsFragment extends Fragment {
         RecipeStepDetailsFragmentBinding binding = DataBindingUtil.inflate(inflater,
                 R.layout.recipe_step_details_fragment, container, false);
 
-        RecipeStep recipeStep = (RecipeStep) getArguments().get(BUNDLE_KEY_RECIPE_STEP);
-        setupInstruction(binding.recipeStepInstruction, recipeStep.getFullDesc());
+        recipeStep = (RecipeStep) getArguments().get(BUNDLE_KEY_RECIPE_STEP);
+
+        setupInstruction(binding.recipeStepInstruction);
+        setupNavigationButtons(binding);
 
         return binding.getRoot();
     }
 
-    private void setupInstruction(TextView recipeStepInstruction, String fullDesc) {
-        recipeStepInstruction.setText(fullDesc);
+    private void setupInstruction(TextView recipeStepInstruction) {
+        recipeStepInstruction.setText(recipeStep.getFullDesc());
+    }
+
+    private void setupNavigationButtons(RecipeStepDetailsFragmentBinding binding) {
+        setupNavigationButton(binding.navigateBefore, BUNDLE_KEY_RECIPE_STEP_ID_BEFORE);
+        setupNavigationButton(binding.navigateNext, BUNDLE_KEY_RECIPE_STEP_ID_NEXT);
+    }
+
+    private void setupNavigationButton(ImageView navigationButton, final String key) {
+        if (getArguments().containsKey(key)) {
+            navigationButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int recipeStepToBeOpenedId = getArguments().getInt(key);
+                    ((Listener) getContext()).onNavigationButtonPressed(recipeStepToBeOpenedId);
+                }
+            });
+        } else {
+            navigationButton.setVisibility(GONE);
+        }
     }
 }

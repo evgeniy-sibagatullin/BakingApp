@@ -17,6 +17,44 @@
             android:background="@android:color/white"
             android:padding="@dimen/padding_big"/>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/padding_default">
+
+            <ImageView
+                android:id="@+id/navigate_before"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:contentDescription="@string/navigate_before"
+                android:foreground="?attr/selectableItemBackground"
+                android:padding="@dimen/padding_big"
+                android:src="@drawable/ic_navigate_before_black_24dp"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
+            <ImageView
+                android:id="@+id/navigate_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:contentDescription="@string/navigate_next"
+                android:foreground="?attr/selectableItemBackground"
+                android:padding="@dimen/padding_big"
+                android:src="@drawable/ic_navigate_next_black_24dp"/>
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </layout>

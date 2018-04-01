@@ -19,9 +19,13 @@ import java.util.List;
 
 import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE;
 import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP;
+import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP_ID_BEFORE;
+import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP_ID_NEXT;
 
 public class RecipeDetailsActivity extends AppCompatActivity implements
-        RecipeDetailsFragment.Listener, RecipeStepsAdapter.Listener {
+        RecipeStepsAdapter.Listener,
+        RecipeDetailsFragment.Listener,
+        RecipeStepDetailsFragment.Listener {
 
     public static Intent getStartingIntent(Context context, Recipe recipe) {
         Intent intent = new Intent(context, RecipeDetailsActivity.class);
@@ -50,24 +54,65 @@ public class RecipeDetailsActivity extends AppCompatActivity implements
         openRecipeStepDetailsFragment(recipeStep);
     }
 
+    @Override
+    public void onNavigationButtonPressed(int recipeStepToBeOpenedId) {
+        Recipe recipe = (Recipe) getIntent().getSerializableExtra(BUNDLE_KEY_RECIPE);
+        List<RecipeStep> recipeSteps = recipe.getRecipeSteps();
+
+        for (RecipeStep recipeStep : recipeSteps) {
+            if (recipeStep.getId() == recipeStepToBeOpenedId) {
+                openRecipeStepDetailsFragment(recipeStep);
+            }
+        }
+    }
+
     private void openRecipeDetailsFragment() {
-        Bundle args = prepareArgs(BUNDLE_KEY_RECIPE, getIntent().getSerializableExtra(BUNDLE_KEY_RECIPE));
+        Bundle args = prepareBasicArgs(BUNDLE_KEY_RECIPE, getIntent().getSerializableExtra(BUNDLE_KEY_RECIPE));
         RecipeDetailsFragment fragment = (RecipeDetailsFragment) Fragment.instantiate(this,
                 RecipeDetailsFragment.class.getCanonicalName(), args);
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
     }
 
     private void openRecipeStepDetailsFragment(RecipeStep recipeStep) {
-        Bundle args = prepareArgs(BUNDLE_KEY_RECIPE_STEP, recipeStep);
+        Bundle args = prepareBasicArgs(BUNDLE_KEY_RECIPE_STEP, recipeStep);
+        addNavigationArgs(args, recipeStep);
         RecipeStepDetailsFragment fragment = (RecipeStepDetailsFragment) Fragment.instantiate(this,
                 RecipeStepDetailsFragment.class.getCanonicalName(), args);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment)
                 .addToBackStack(RecipeStepDetailsFragment.TAG).commit();
     }
 
-    private Bundle prepareArgs(String key, Serializable value) {
+    private Bundle prepareBasicArgs(String key, Serializable value) {
         Bundle args = new Bundle();
         args.putSerializable(key, value);
         return args;
+    }
+
+    private void addNavigationArgs(Bundle args, RecipeStep currentRecipeStep) {
+        Recipe recipe = (Recipe) getIntent().getSerializableExtra(BUNDLE_KEY_RECIPE);
+        List<RecipeStep> recipeSteps = recipe.getRecipeSteps();
+
+        int idBefore = 0; //Does not matter, will be redefined before usage anyway
+        boolean isFirstStepPassed = false;
+        boolean isIdNextToBeDefined = false;
+
+        for (RecipeStep recipeStep : recipeSteps) {
+            if (isIdNextToBeDefined) {
+                args.putInt(BUNDLE_KEY_RECIPE_STEP_ID_NEXT, recipeStep.getId());
+                break;
+            }
+
+            if (currentRecipeStep.equals(recipeStep)) {
+                if (isFirstStepPassed) {
+                    args.putInt(BUNDLE_KEY_RECIPE_STEP_ID_BEFORE, idBefore);
+                }
+
+                isIdNextToBeDefined = true;
+            } else {
+                idBefore = recipeStep.getId();
+            }
+
+            isFirstStepPassed = true;
+        }
     }
 }

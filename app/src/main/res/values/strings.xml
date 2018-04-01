@@ -3,4 +3,6 @@
     <string name="recipe_icon_content_desc">Recipe icon</string>
     <string name="recipe_ingredients">Recipe Ingredients</string>
     <string name="recipe_steps">Recipe Steps</string>
+    <string name="navigate_before">Navigate before</string>
+    <string name="navigate_next">Navigate next</string>
 </resources>

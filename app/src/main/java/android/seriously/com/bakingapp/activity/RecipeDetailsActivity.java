@@ -7,16 +7,18 @@ import android.seriously.com.bakingapp.R;
 import android.seriously.com.bakingapp.adapter.RecipeStepsAdapter;
 import android.seriously.com.bakingapp.fragment.RecipeDetailsFragment;
 import android.seriously.com.bakingapp.fragment.RecipeStepDetailsFragment;
+import android.seriously.com.bakingapp.fragment.dialog.IngredientsDialog;
 import android.seriously.com.bakingapp.model.Ingredient;
 import android.seriously.com.bakingapp.model.Recipe;
 import android.seriously.com.bakingapp.model.RecipeStep;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
+import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_INGREDIENTS;
 import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE;
 import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP;
 import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP_ID_BEFORE;
@@ -46,7 +48,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements
 
     @Override
     public void onIngredientsSelected(List<Ingredient> ingredients) {
-        Toast.makeText(this, ingredients.get(0).getName(), Toast.LENGTH_SHORT).show();
+        openIngredientsDialog(ingredients);
     }
 
     @Override
@@ -72,6 +74,14 @@ public class RecipeDetailsActivity extends AppCompatActivity implements
         while (getSupportFragmentManager().popBackStackImmediate()) ;
 
         openRecipeDetailsFragment();
+    }
+
+    private void openIngredientsDialog(List<Ingredient> ingredients) {
+        Bundle args = new Bundle();
+        args.putSerializable(BUNDLE_KEY_INGREDIENTS, new ArrayList<>(ingredients));
+        IngredientsDialog dialog = (IngredientsDialog) Fragment.instantiate(this,
+                IngredientsDialog.class.getCanonicalName(), args);
+        dialog.show(getSupportFragmentManager(), IngredientsDialog.TAG);
     }
 
     private void openRecipeDetailsFragment() {

@@ -8,12 +8,13 @@
         android:layout_height="match_parent"
         android:background="@color/colorPrimaryDark"
         android:orientation="vertical"
-        android:padding="@dimen/padding_default">
+        android:padding="@dimen/padding_big">
 
         <com.google.android.exoplayer2.ui.PlayerView
             android:id="@+id/video_player"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_big"
             android:visibility="gone"
             app:controller_layout_id="@layout/exo_player_controls"/>
 
@@ -21,7 +22,6 @@
             android:id="@+id/recipe_step_instruction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_default"
             android:background="@android:color/white"
             android:padding="@dimen/padding_big"/>
 

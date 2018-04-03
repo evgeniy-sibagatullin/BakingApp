@@ -15,11 +15,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
@@ -135,10 +141,10 @@ public class RecipeStepDetailsFragment extends Fragment {
         exoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), new DefaultTrackSelector());
         exoPlayer.prepare(mediaSource);
         exoPlayer.setPlayWhenReady(true);
+        exoPlayer.addListener(getPlayerEventListener());
 
         binding.videoPlayer.requestFocus();
         binding.videoPlayer.setPlayer(exoPlayer);
-        binding.videoPlayer.setVisibility(VISIBLE);
     }
 
     private void setupFullScreenDialog() {
@@ -152,6 +158,7 @@ public class RecipeStepDetailsFragment extends Fragment {
         };
 
         ((ViewGroup) binding.videoPlayer.getParent()).removeView(binding.videoPlayer);
+        binding.videoPlayer.setVisibility(VISIBLE);
         fullScreenDialog.addContentView(binding.videoPlayer,
                 new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         fullScreenDialog.show();
@@ -188,5 +195,52 @@ public class RecipeStepDetailsFragment extends Fragment {
                 ((Listener) getContext()).onBackToListButtonPressed();
             }
         });
+    }
+
+    private Player.EventListener getPlayerEventListener() {
+        return new Player.EventListener() {
+            @Override
+            public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
+            }
+
+            @Override
+            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+            }
+
+            @Override
+            public void onLoadingChanged(boolean isLoading) {
+            }
+
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                if (playbackState == Player.STATE_READY) {
+                    binding.videoPlayer.setVisibility(VISIBLE);
+                }
+            }
+
+            @Override
+            public void onRepeatModeChanged(int repeatMode) {
+            }
+
+            @Override
+            public void onShuffleModeEnabledChanged(boolean shuffeModeEnabled) {
+            }
+
+            @Override
+            public void onPlayerError(ExoPlaybackException error) {
+            }
+
+            @Override
+            public void onPositionDiscontinuity(int reason) {
+            }
+
+            @Override
+            public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+            }
+
+            @Override
+            public void onSeekProcessed() {
+            }
+        };
     }
 }

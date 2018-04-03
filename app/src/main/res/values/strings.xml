@@ -6,4 +6,6 @@
     <string name="navigate_before">Navigate before</string>
     <string name="navigate_next">Navigate next</string>
     <string name="back_to_list">Back to list</string>
+    <string name="exo_play">Exo play</string>
+    <string name="exo_pause">Exo pause</string>
 </resources>

@@ -1,5 +1,6 @@
 package android.seriously.com.bakingapp.fragment;
 
+import android.app.Dialog;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,17 +23,20 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP;
 import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP_ID_BEFORE;
 import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP_ID_NEXT;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 @SuppressWarnings("ConstantConditions")
 public class RecipeStepDetailsFragment extends Fragment {
 
     public static final String TAG = RecipeStepDetailsFragment.class.getSimpleName();
 
+    private Dialog fullScreenDialog;
     private ExoPlayer exoPlayer;
     private MediaSource mediaSource;
     private RecipeStepDetailsFragmentBinding binding;
@@ -92,7 +96,13 @@ public class RecipeStepDetailsFragment extends Fragment {
     }
 
     private void releasePlayer() {
+        if (fullScreenDialog != null) {
+            fullScreenDialog.dismiss();
+            fullScreenDialog = null;
+        }
+
         if (exoPlayer != null) {
+            exoPlayer.stop();
             exoPlayer.release();
             exoPlayer = null;
         }
@@ -107,21 +117,44 @@ public class RecipeStepDetailsFragment extends Fragment {
 
         if (videoUrl == null || videoUrl.isEmpty()) return;
 
-        binding.videoPlayer.setVisibility(VISIBLE);
-
         if (exoPlayer == null) {
-            DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getContext(),
-                    Util.getUserAgent(getContext(), getString(R.string.app_name)));
-            mediaSource = new ExtractorMediaSource.Factory(dataSourceFactory)
-                    .createMediaSource(Uri.parse(videoUrl));
+            setupPlayer(videoUrl);
 
-            exoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), new DefaultTrackSelector());
-            exoPlayer.prepare(mediaSource);
-            exoPlayer.setPlayWhenReady(true);
-
-            binding.videoPlayer.requestFocus();
-            binding.videoPlayer.setPlayer(exoPlayer);
+            if (ORIENTATION_LANDSCAPE == getResources().getConfiguration().orientation) {
+                setupFullScreenDialog();
+            }
         }
+    }
+
+    private void setupPlayer(String videoUrl) {
+        DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getContext(),
+                Util.getUserAgent(getContext(), getString(R.string.app_name)));
+        mediaSource = new ExtractorMediaSource.Factory(dataSourceFactory)
+                .createMediaSource(Uri.parse(videoUrl));
+
+        exoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), new DefaultTrackSelector());
+        exoPlayer.prepare(mediaSource);
+        exoPlayer.setPlayWhenReady(true);
+
+        binding.videoPlayer.requestFocus();
+        binding.videoPlayer.setPlayer(exoPlayer);
+        binding.videoPlayer.setVisibility(VISIBLE);
+    }
+
+    private void setupFullScreenDialog() {
+        fullScreenDialog = new Dialog(getContext(),
+                android.R.style.Theme_Black_NoTitleBar_Fullscreen) {
+            @Override
+            public void onBackPressed() {
+                this.dismiss();
+                super.onBackPressed();
+            }
+        };
+
+        ((ViewGroup) binding.videoPlayer.getParent()).removeView(binding.videoPlayer);
+        fullScreenDialog.addContentView(binding.videoPlayer,
+                new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+        fullScreenDialog.show();
     }
 
     private void setupInstruction() {

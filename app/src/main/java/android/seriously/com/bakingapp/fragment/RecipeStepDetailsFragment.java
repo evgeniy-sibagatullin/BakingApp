@@ -13,6 +13,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -33,6 +36,7 @@ import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP;
 import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP_ID_BEFORE;
 import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP_ID_NEXT;
+import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
@@ -41,6 +45,7 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 public class RecipeStepDetailsFragment extends Fragment {
 
     public static final String TAG = RecipeStepDetailsFragment.class.getSimpleName();
+    private static final int ANIMATION_DURATION = 1024;
 
     private Dialog fullScreenDialog;
     private ExoPlayer exoPlayer;
@@ -145,6 +150,9 @@ public class RecipeStepDetailsFragment extends Fragment {
 
         binding.videoPlayer.requestFocus();
         binding.videoPlayer.setPlayer(exoPlayer);
+
+        binding.videoLoadingProgress.startAnimation(prepareAnimationForProgressImage());
+        binding.videoLoadingProgress.setVisibility(VISIBLE);
     }
 
     private void setupFullScreenDialog() {
@@ -157,8 +165,10 @@ public class RecipeStepDetailsFragment extends Fragment {
             }
         };
 
+        binding.videoLoadingProgress.setVisibility(GONE);
         ((ViewGroup) binding.videoPlayer.getParent()).removeView(binding.videoPlayer);
         binding.videoPlayer.setVisibility(VISIBLE);
+
         fullScreenDialog.addContentView(binding.videoPlayer,
                 new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         fullScreenDialog.show();
@@ -214,6 +224,7 @@ public class RecipeStepDetailsFragment extends Fragment {
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
                 if (playbackState == Player.STATE_READY) {
+                    binding.videoLoadingProgress.setVisibility(GONE);
                     binding.videoPlayer.setVisibility(VISIBLE);
                 }
             }
@@ -242,5 +253,14 @@ public class RecipeStepDetailsFragment extends Fragment {
             public void onSeekProcessed() {
             }
         };
+    }
+
+    private RotateAnimation prepareAnimationForProgressImage() {
+        RotateAnimation rotateAnimation = new RotateAnimation(0, 360,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        rotateAnimation.setInterpolator(new LinearInterpolator());
+        rotateAnimation.setDuration(ANIMATION_DURATION);
+        rotateAnimation.setRepeatCount(Animation.INFINITE);
+        return rotateAnimation;
     }
 }

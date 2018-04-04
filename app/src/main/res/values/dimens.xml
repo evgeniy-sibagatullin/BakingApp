@@ -4,4 +4,5 @@
     <dimen name="margin_big">16dp</dimen>
     <dimen name="padding_default">8dp</dimen>
     <dimen name="padding_big">16dp</dimen>
+    <dimen name="loading_progress_size">64dp</dimen>
 </resources>

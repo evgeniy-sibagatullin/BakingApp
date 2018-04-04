@@ -2,7 +2,7 @@ package android.seriously.com.bakingapp.loader;
 
 import android.content.Context;
 import android.seriously.com.bakingapp.model.Recipe;
-import android.seriously.com.bakingapp.utils.QueryUtils;
+import android.seriously.com.bakingapp.utils.NetworkUtils;
 import android.support.v4.content.AsyncTaskLoader;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class RecipeLoader extends AsyncTaskLoader<List<Recipe>> {
     @Override
     public List<Recipe> loadInBackground() {
         if (cache.isEmpty()) {
-            cache.addAll(QueryUtils.fetchRecipesData());
+            cache.addAll(NetworkUtils.fetchRecipesData());
         }
 
         return cache;

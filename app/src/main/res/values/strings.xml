@@ -9,4 +9,5 @@
     <string name="exo_play">Exo play</string>
     <string name="exo_pause">Exo pause</string>
     <string name="video_loading_progress">Video loading progress</string>
+    <string name="no_connection">No connection</string>
 </resources>

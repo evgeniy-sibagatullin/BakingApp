@@ -2,17 +2,25 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <android.support.constraint.ConstraintLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPrimaryDark"
         android:padding="@dimen/padding_default">
+
+        <ImageView
+            android:id="@+id/no_connection"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/no_connection"
+            android:src="@drawable/ic_signal_wifi_off_black_24dp"
+            android:visibility="gone"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-    </android.support.constraint.ConstraintLayout>
+    </FrameLayout>
 
 </layout>

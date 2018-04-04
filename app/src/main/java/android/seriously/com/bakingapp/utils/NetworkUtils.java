@@ -1,8 +1,12 @@
 package android.seriously.com.bakingapp.utils;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.seriously.com.bakingapp.model.Ingredient;
 import android.seriously.com.bakingapp.model.Recipe;
 import android.seriously.com.bakingapp.model.RecipeStep;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -20,9 +24,9 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class QueryUtils {
+public final class NetworkUtils {
 
-    private static final String LOG_TAG = QueryUtils.class.getSimpleName();
+    private static final String LOG_TAG = NetworkUtils.class.getSimpleName();
     private static final String RECIPE_LISTING_URL = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
 
     /* Request parameters */
@@ -46,7 +50,19 @@ public final class QueryUtils {
     private static final String JSON_RECIPE_STEP_KEY_VIDEO_URL = "videoURL";
     private static final String JSON_RECIPE_STEP_KEY_THUMBNAIL_URL = "thumbnailURL";
 
-    private QueryUtils() {
+    private NetworkUtils() {
+    }
+
+    public static boolean isConnected(Context context) {
+        NetworkInfo activeNetworkInfo = getActiveNetworkInfo(context);
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    @Nullable
+    private static NetworkInfo getActiveNetworkInfo(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        return connectivityManager == null ? null : connectivityManager.getActiveNetworkInfo();
     }
 
     public static List<Recipe> fetchRecipesData() {

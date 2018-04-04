@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.seriously.com.bakingapp.R;
 import android.seriously.com.bakingapp.databinding.RecipeStepDetailsFragmentBinding;
 import android.seriously.com.bakingapp.model.RecipeStep;
+import android.seriously.com.bakingapp.utils.ViewUtils;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -32,7 +33,6 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
-import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP;
 import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP_ID_BEFORE;
 import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP_ID_NEXT;
@@ -131,7 +131,7 @@ public class RecipeStepDetailsFragment extends Fragment {
         if (exoPlayer == null) {
             setupPlayer(videoUrl);
 
-            if (ORIENTATION_LANDSCAPE == getResources().getConfiguration().orientation) {
+            if (ViewUtils.isOrientationLandscape(getResources())) {
                 setupFullScreenDialog();
             }
         }

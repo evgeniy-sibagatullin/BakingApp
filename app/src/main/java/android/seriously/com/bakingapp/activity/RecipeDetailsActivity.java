@@ -24,7 +24,7 @@ import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_
 import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP_ID_BEFORE;
 import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP_ID_NEXT;
 
-public class RecipeDetailsActivity extends AppCompatActivity implements
+public class RecipeDetailsActivity extends BasicActivity implements
         RecipeStepsAdapter.Listener,
         RecipeDetailsFragment.Listener,
         RecipeStepDetailsFragment.Listener {

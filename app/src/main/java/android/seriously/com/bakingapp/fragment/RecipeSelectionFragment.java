@@ -8,6 +8,7 @@ import android.seriously.com.bakingapp.databinding.RecipeSelectionFragmentBindin
 import android.seriously.com.bakingapp.loader.RecipeLoader;
 import android.seriously.com.bakingapp.model.Recipe;
 import android.seriously.com.bakingapp.utils.NetworkUtils;
+import android.seriously.com.bakingapp.utils.ViewUtils;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,7 +29,8 @@ import static android.view.View.VISIBLE;
 public class RecipeSelectionFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<List<Recipe>> {
 
-    private static final int GRID_WIDTH = 2;
+    private static final int SPAN_COUNT_MOBILE = 2;
+    private static final int SPAN_COUNT_TABLET = 4;
     private static final int LOADER_ID = 777;
 
     private RecipeCardsAdapter recipeCardsAdapter;
@@ -46,7 +48,8 @@ public class RecipeSelectionFragment extends Fragment implements
     }
 
     private void setupRecyclerView(RecyclerView recyclerView) {
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), GRID_WIDTH));
+        int spanCount = ViewUtils.isTablet(getContext()) ? SPAN_COUNT_TABLET : SPAN_COUNT_MOBILE;
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), spanCount));
         recipeCardsAdapter = new RecipeCardsAdapter(getContext());
         recyclerView.setAdapter(recipeCardsAdapter);
     }

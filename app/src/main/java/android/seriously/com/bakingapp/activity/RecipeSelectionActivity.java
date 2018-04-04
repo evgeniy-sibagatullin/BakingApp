@@ -7,7 +7,7 @@ import android.seriously.com.bakingapp.fragment.RecipeSelectionFragment;
 import android.seriously.com.bakingapp.model.Recipe;
 import android.support.v7.app.AppCompatActivity;
 
-public class RecipeSelectionActivity extends AppCompatActivity implements RecipeCardsAdapter.Listener {
+public class RecipeSelectionActivity extends BasicActivity implements RecipeCardsAdapter.Listener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

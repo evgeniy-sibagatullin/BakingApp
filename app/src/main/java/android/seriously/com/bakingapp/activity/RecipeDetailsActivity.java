@@ -11,8 +11,8 @@ import android.seriously.com.bakingapp.fragment.dialog.IngredientsDialog;
 import android.seriously.com.bakingapp.model.Ingredient;
 import android.seriously.com.bakingapp.model.Recipe;
 import android.seriously.com.bakingapp.model.RecipeStep;
+import android.seriously.com.bakingapp.utils.ViewUtils;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -39,10 +39,19 @@ public class RecipeDetailsActivity extends BasicActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.recipe_details_activity);
+        boolean isTablet = ViewUtils.isTablet(this);
+        int contentViewId = isTablet ? R.layout.recipe_details_tablet_activity :
+                R.layout.recipe_details_mobile_activity;
+
+        setContentView(contentViewId);
 
         if (savedInstanceState == null) {
-            openRecipeDetailsFragment();
+            Recipe recipe = (Recipe) getIntent().getSerializableExtra(BUNDLE_KEY_RECIPE);
+            openRecipeDetailsFragment(recipe);
+
+            if (isTablet) {
+                openRecipeStepDetailsFragment(recipe.getRecipeSteps().get(0));
+            }
         }
     }
 
@@ -70,10 +79,13 @@ public class RecipeDetailsActivity extends BasicActivity implements
 
     @Override
     public void onBackToListButtonPressed() {
-        //noinspection StatementWithEmptyBody
-        while (getSupportFragmentManager().popBackStackImmediate()) ;
-
-        openRecipeDetailsFragment();
+        if (ViewUtils.isTablet(this)) {
+            finish();
+        } else {
+            //noinspection StatementWithEmptyBody
+            while (getSupportFragmentManager().popBackStackImmediate()) ;
+            openRecipeDetailsFragment((Recipe) getIntent().getSerializableExtra(BUNDLE_KEY_RECIPE));
+        }
     }
 
     private void openIngredientsDialog(List<Ingredient> ingredients) {
@@ -84,8 +96,8 @@ public class RecipeDetailsActivity extends BasicActivity implements
         dialog.show(getSupportFragmentManager(), IngredientsDialog.TAG);
     }
 
-    private void openRecipeDetailsFragment() {
-        Bundle args = prepareBasicArgs(BUNDLE_KEY_RECIPE, getIntent().getSerializableExtra(BUNDLE_KEY_RECIPE));
+    private void openRecipeDetailsFragment(Recipe recipe) {
+        Bundle args = prepareBasicArgs(BUNDLE_KEY_RECIPE, recipe);
         RecipeDetailsFragment fragment = (RecipeDetailsFragment) Fragment.instantiate(this,
                 RecipeDetailsFragment.class.getCanonicalName(), args);
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
@@ -96,7 +108,12 @@ public class RecipeDetailsActivity extends BasicActivity implements
         addNavigationArgs(args, recipeStep);
         RecipeStepDetailsFragment fragment = (RecipeStepDetailsFragment) Fragment.instantiate(this,
                 RecipeStepDetailsFragment.class.getCanonicalName(), args);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment)
+
+        boolean isTablet = ViewUtils.isTablet(this);
+        int fragmentConteinerId = isTablet ? R.id.fragment_details_container :
+                R.id.fragment_container;
+
+        getSupportFragmentManager().beginTransaction().replace(fragmentConteinerId, fragment)
                 .addToBackStack(RecipeStepDetailsFragment.TAG).commit();
     }
 

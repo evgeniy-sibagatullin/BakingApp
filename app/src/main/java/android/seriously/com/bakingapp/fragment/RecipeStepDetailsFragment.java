@@ -131,7 +131,8 @@ public class RecipeStepDetailsFragment extends Fragment {
         if (exoPlayer == null) {
             setupPlayer(videoUrl);
 
-            if (ViewUtils.isOrientationLandscape(getResources())) {
+            if (ViewUtils.isOrientationLandscape(getResources())
+                    && !ViewUtils.isTablet(getContext())) {
                 setupFullScreenDialog();
             }
         }

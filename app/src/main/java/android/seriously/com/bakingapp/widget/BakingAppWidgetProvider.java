@@ -1,18 +1,21 @@
-package android.seriously.com.bakingapp;
+package android.seriously.com.bakingapp.widget;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
+import android.seriously.com.bakingapp.R;
 import android.widget.RemoteViews;
 
 public class BakingAppWidgetProvider extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_app_widget_provider);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_app_widget);
 
-        CharSequence blankWidgetText = context.getString(R.string.blank_widget_text);
-        views.setTextViewText(R.id.blank_widget_text, blankWidgetText);
+        Intent intent = new Intent(context, ListWidgetService.class);
+        views.setRemoteAdapter(R.id.widget_list_view, intent);
+        views.setEmptyView(R.id.widget_list_view, R.id.blank_widget_text);
 
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }

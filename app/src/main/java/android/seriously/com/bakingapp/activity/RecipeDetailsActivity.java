@@ -13,7 +13,9 @@ import android.seriously.com.bakingapp.model.Recipe;
 import android.seriously.com.bakingapp.model.RecipeStep;
 import android.seriously.com.bakingapp.utils.ViewUtils;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -39,6 +41,9 @@ public class RecipeDetailsActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //noinspection ConstantConditions
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         boolean isTablet = ViewUtils.isTablet(this);
         int contentViewId = isTablet ? R.layout.recipe_details_tablet_activity :
@@ -87,6 +92,15 @@ public class RecipeDetailsActivity extends AppCompatActivity implements
             while (getSupportFragmentManager().popBackStackImmediate()) ;
             openRecipeDetailsFragment((Recipe) getIntent().getSerializableExtra(BUNDLE_KEY_RECIPE));
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            NavUtils.navigateUpFromSameTask(this);
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void openIngredientsDialog(List<Ingredient> ingredients) {

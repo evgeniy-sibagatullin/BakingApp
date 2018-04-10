@@ -9,6 +9,7 @@ import android.seriously.com.bakingapp.fragment.RecipeSelectionFragment;
 import android.seriously.com.bakingapp.model.Ingredient;
 import android.seriously.com.bakingapp.model.Recipe;
 import android.seriously.com.bakingapp.widget.BakingAppWidgetProvider;
+import android.support.v7.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 
@@ -17,7 +18,7 @@ import java.util.List;
 import static android.seriously.com.bakingapp.utils.Constants.PREFERENCES_KEY_INGREDIENTS;
 import static android.seriously.com.bakingapp.utils.Constants.PREFERENCES_NAME;
 
-public class RecipeSelectionActivity extends BasicActivity implements RecipeCardsAdapter.Listener {
+public class RecipeSelectionActivity extends AppCompatActivity implements RecipeCardsAdapter.Listener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

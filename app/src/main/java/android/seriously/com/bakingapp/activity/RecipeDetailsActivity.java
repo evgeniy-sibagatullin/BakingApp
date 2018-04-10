@@ -13,6 +13,7 @@ import android.seriously.com.bakingapp.model.Recipe;
 import android.seriously.com.bakingapp.model.RecipeStep;
 import android.seriously.com.bakingapp.utils.ViewUtils;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_
 import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP_ID_BEFORE;
 import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP_ID_NEXT;
 
-public class RecipeDetailsActivity extends BasicActivity implements
+public class RecipeDetailsActivity extends AppCompatActivity implements
         RecipeStepsAdapter.Listener,
         RecipeDetailsFragment.Listener,
         RecipeStepDetailsFragment.Listener {

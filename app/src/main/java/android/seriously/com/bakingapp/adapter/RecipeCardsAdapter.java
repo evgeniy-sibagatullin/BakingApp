@@ -1,6 +1,7 @@
 package android.seriously.com.bakingapp.adapter;
 
 import android.content.Context;
+import android.seriously.com.bakingapp.R;
 import android.seriously.com.bakingapp.databinding.RecipeCardItemBinding;
 import android.seriously.com.bakingapp.model.Recipe;
 import android.support.annotation.NonNull;
@@ -8,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +70,12 @@ public class RecipeCardsAdapter extends RecyclerView.Adapter<RecipeCardsAdapter.
                     ((Listener) context).onRecipeCardSelected(recipe);
                 }
             });
+
+            if (!recipe.getImageUrl().trim().isEmpty()) {
+                Picasso.with(context).load(recipe.getImageUrl())
+                        .placeholder(R.drawable.loading_progress)
+                        .into(binding.cardRecipeIcon);
+            }
         }
     }
 }

@@ -37,6 +37,7 @@ public final class NetworkUtils {
     /* Json keys*/
     private static final String JSON_RECIPE_KEY_ID = "id";
     private static final String JSON_RECIPE_KEY_NAME = "name";
+    private static final String JSON_RECIPE_KEY_IMAGE = "image";
     private static final String JSON_RECIPE_KEY_INGREDIENTS = "ingredients";
     private static final String JSON_RECIPE_KEY_STEPS = "steps";
 
@@ -48,7 +49,6 @@ public final class NetworkUtils {
     private static final String JSON_RECIPE_STEP_KEY_SHORT_DESCRIPTION = "shortDescription";
     private static final String JSON_RECIPE_STEP_KEY_DESCRIPTION = "description";
     private static final String JSON_RECIPE_STEP_KEY_VIDEO_URL = "videoURL";
-    private static final String JSON_RECIPE_STEP_KEY_THUMBNAIL_URL = "thumbnailURL";
 
     private NetworkUtils() {
     }
@@ -147,12 +147,14 @@ public final class NetworkUtils {
 
                 int recipeId = recipeJSON.getInt(JSON_RECIPE_KEY_ID);
                 String recipeName = recipeJSON.getString(JSON_RECIPE_KEY_NAME);
+                String recipeImageUrl = recipeJSON.getString(JSON_RECIPE_KEY_IMAGE);
                 List<Ingredient> recipeIngredients = extractRecipeIngredients(
                         recipeJSON.getJSONArray(JSON_RECIPE_KEY_INGREDIENTS));
                 List<RecipeStep> recipeSteps = extractRecipeSteps(
                         recipeJSON.getJSONArray(JSON_RECIPE_KEY_STEPS));
 
-                recipes.add(new Recipe(recipeId, recipeName, recipeIngredients, recipeSteps));
+                recipes.add(new Recipe(recipeId, recipeName, recipeImageUrl, recipeIngredients,
+                        recipeSteps));
             }
         } catch (JSONException e) {
             Log.e(LOG_TAG, "Problem extracting the recipe JSON data", e);
@@ -192,10 +194,6 @@ public final class NetworkUtils {
                 String shortDesc = recipeStepJSON.getString(JSON_RECIPE_STEP_KEY_SHORT_DESCRIPTION);
                 String fullDesc = recipeStepJSON.getString(JSON_RECIPE_STEP_KEY_DESCRIPTION);
                 String videoURL = recipeStepJSON.getString(JSON_RECIPE_STEP_KEY_VIDEO_URL);
-
-                if (videoURL == null || videoURL.trim().isEmpty()) {
-                    videoURL = recipeStepJSON.getString(JSON_RECIPE_STEP_KEY_THUMBNAIL_URL);
-                }
 
                 recipeSteps.add(new RecipeStep(id, shortDesc, fullDesc, videoURL));
             }

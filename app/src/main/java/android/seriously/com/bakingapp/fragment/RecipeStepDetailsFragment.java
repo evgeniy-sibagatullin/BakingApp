@@ -19,6 +19,7 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -36,6 +37,9 @@ import com.google.android.exoplayer2.util.Util;
 import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP;
 import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP_ID_BEFORE;
 import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP_ID_NEXT;
+import static android.seriously.com.bakingapp.utils.Constants.PLAYER_KEY_RESUME_POSITION;
+import static android.seriously.com.bakingapp.utils.Constants.PLAYER_KEY_RESUME_WINDOW;
+import static android.seriously.com.bakingapp.utils.Constants.PLAYER_KEY_SHOULD_AUTO_PLAY;
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
@@ -52,6 +56,10 @@ public class RecipeStepDetailsFragment extends Fragment {
     private MediaSource mediaSource;
     private RecipeStepDetailsFragmentBinding binding;
 
+    private long resumePosition;
+    private int resumeWindow;
+    private boolean shouldAutoPlay;
+
     public interface Listener {
         void onNavigationButtonPressed(int recipeStepToBeOpenedId);
 
@@ -59,6 +67,21 @@ public class RecipeStepDetailsFragment extends Fragment {
     }
 
     private RecipeStep recipeStep;
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (savedInstanceState == null) {
+            resumePosition = C.TIME_UNSET;
+            resumeWindow = C.INDEX_UNSET;
+            shouldAutoPlay = true;
+        } else {
+            resumePosition = savedInstanceState.getLong(PLAYER_KEY_RESUME_POSITION);
+            resumeWindow = savedInstanceState.getInt(PLAYER_KEY_RESUME_WINDOW);
+            shouldAutoPlay = savedInstanceState.getBoolean(PLAYER_KEY_SHOULD_AUTO_PLAY);
+        }
+    }
 
     @Nullable
     @Override
@@ -75,35 +98,24 @@ public class RecipeStepDetailsFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        if (Util.SDK_INT > 23) {
-            initializePlayer();
-        }
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
-        if ((Util.SDK_INT <= 23 || exoPlayer == null)) {
-            initializePlayer();
-        }
+        initializePlayer();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if (Util.SDK_INT <= 23) {
-            releasePlayer();
-        }
+        releasePlayer();
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        if (Util.SDK_INT > 23) {
-            releasePlayer();
-        }
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putLong(PLAYER_KEY_RESUME_POSITION, resumePosition);
+        outState.putInt(PLAYER_KEY_RESUME_WINDOW, resumeWindow);
+        outState.putBoolean(PLAYER_KEY_SHOULD_AUTO_PLAY, shouldAutoPlay);
     }
 
     private void releasePlayer() {
@@ -113,6 +125,10 @@ public class RecipeStepDetailsFragment extends Fragment {
         }
 
         if (exoPlayer != null) {
+            resumePosition = Math.max(0, exoPlayer.getContentPosition());
+            resumeWindow = exoPlayer.getCurrentWindowIndex();
+            shouldAutoPlay = exoPlayer.getPlayWhenReady();
+
             exoPlayer.stop();
             exoPlayer.release();
             exoPlayer = null;
@@ -145,8 +161,14 @@ public class RecipeStepDetailsFragment extends Fragment {
                 .createMediaSource(Uri.parse(videoUrl));
 
         exoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), new DefaultTrackSelector());
-        exoPlayer.prepare(mediaSource);
-        exoPlayer.setPlayWhenReady(true);
+        boolean haveResumePosition = resumeWindow != C.INDEX_UNSET;
+
+        if (haveResumePosition) {
+            exoPlayer.seekTo(resumeWindow, resumePosition);
+        }
+
+        exoPlayer.prepare(mediaSource, !haveResumePosition, false);
+        exoPlayer.setPlayWhenReady(shouldAutoPlay);
         exoPlayer.addListener(getPlayerEventListener());
 
         binding.videoPlayer.requestFocus();

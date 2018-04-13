@@ -1,8 +1,8 @@
 package android.seriously.com.bakingapp.utils;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.seriously.com.bakingapp.R;
 
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 
@@ -16,7 +16,6 @@ public final class ViewUtils {
     }
 
     public static boolean isTablet(Context context) {
-        return (context.getResources().getConfiguration().screenLayout &
-                Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+        return context.getResources().getBoolean(R.bool.isTablet);
     }
 }

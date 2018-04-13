@@ -11,6 +11,7 @@ import android.seriously.com.bakingapp.utils.ViewUtils;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -142,7 +143,7 @@ public class RecipeStepDetailsFragment extends Fragment {
     private void initializePlayer() {
         String videoUrl = recipeStep.getVideoUrl();
 
-        if (videoUrl == null || videoUrl.isEmpty()) return;
+        if (TextUtils.isEmpty(videoUrl)) return;
 
         if (exoPlayer == null) {
             setupPlayer(videoUrl);

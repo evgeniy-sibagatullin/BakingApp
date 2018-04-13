@@ -6,6 +6,7 @@ import android.seriously.com.bakingapp.databinding.RecipeCardItemBinding;
 import android.seriously.com.bakingapp.model.Recipe;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,7 +72,7 @@ public class RecipeCardsAdapter extends RecyclerView.Adapter<RecipeCardsAdapter.
                 }
             });
 
-            if (!recipe.getImageUrl().trim().isEmpty()) {
+            if (!TextUtils.isEmpty(recipe.getImageUrl())) {
                 Picasso.with(context).load(recipe.getImageUrl())
                         .placeholder(R.drawable.loading_progress)
                         .into(binding.cardRecipeIcon);

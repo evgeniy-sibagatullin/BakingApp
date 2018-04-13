@@ -72,8 +72,8 @@ public class RecipeCardsAdapter extends RecyclerView.Adapter<RecipeCardsAdapter.
                 }
             });
 
-            if (!TextUtils.isEmpty(recipe.getImageUrl())) {
-                Picasso.with(context).load(recipe.getImageUrl())
+            if (!TextUtils.isEmpty(recipe.getImage())) {
+                Picasso.with(context).load(recipe.getImage())
                         .placeholder(R.drawable.loading_progress)
                         .into(binding.cardRecipeIcon);
             }

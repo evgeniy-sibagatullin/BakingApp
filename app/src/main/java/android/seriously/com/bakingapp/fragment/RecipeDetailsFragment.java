@@ -40,7 +40,7 @@ public class RecipeDetailsFragment extends Fragment {
 
         setTitle(recipe.getName());
         setupIngredients(binding.recipeIngredients, recipe.getIngredients());
-        setupRecyclerView(binding.recyclerView, recipe.getRecipeSteps());
+        setupRecyclerView(binding.recyclerView, recipe.getSteps());
 
         return binding.getRoot();
     }

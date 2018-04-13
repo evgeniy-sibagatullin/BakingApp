@@ -56,7 +56,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements
             openRecipeDetailsFragment(recipe);
 
             if (isTablet) {
-                openRecipeStepDetailsFragment(recipe.getRecipeSteps().get(0));
+                openRecipeStepDetailsFragment(recipe.getSteps().get(0));
             }
         }
     }
@@ -74,7 +74,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements
     @Override
     public void onNavigationButtonPressed(int recipeStepToBeOpenedId) {
         Recipe recipe = (Recipe) getIntent().getSerializableExtra(BUNDLE_KEY_RECIPE);
-        List<RecipeStep> recipeSteps = recipe.getRecipeSteps();
+        List<RecipeStep> recipeSteps = recipe.getSteps();
 
         for (RecipeStep recipeStep : recipeSteps) {
             if (recipeStep.getId() == recipeStepToBeOpenedId) {
@@ -140,7 +140,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements
 
     private void addNavigationArgs(Bundle args, RecipeStep currentRecipeStep) {
         Recipe recipe = (Recipe) getIntent().getSerializableExtra(BUNDLE_KEY_RECIPE);
-        List<RecipeStep> recipeSteps = recipe.getRecipeSteps();
+        List<RecipeStep> recipeSteps = recipe.getSteps();
 
         int idBefore = 0; //Does not matter, will be redefined before usage anyway
         boolean isFirstStepPassed = false;

@@ -49,8 +49,8 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
         }
 
         void bind(final Ingredient ingredient) {
-            binding.ingredientName.setText(ingredient.getName());
-            binding.ingredientQuantity.setText(String.valueOf(ingredient.getQuantity()));
+            binding.ingredientName.setText(ingredient.getIngredient());
+            binding.ingredientQuantity.setText(ingredient.getQuantity());
             binding.ingredientMeasure.setText(ingredient.getMeasure());
         }
     }

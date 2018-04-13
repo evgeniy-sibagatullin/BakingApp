@@ -54,7 +54,7 @@ public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepsAdapter.
         }
 
         void bind(final RecipeStep recipeStep) {
-            binding.recipeStep.setText(recipeStep.getShortDesc());
+            binding.recipeStep.setText(recipeStep.getShortDescription());
             binding.recipeStep.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

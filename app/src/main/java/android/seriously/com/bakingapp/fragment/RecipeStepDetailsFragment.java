@@ -141,7 +141,7 @@ public class RecipeStepDetailsFragment extends Fragment {
     }
 
     private void initializePlayer() {
-        String videoUrl = recipeStep.getVideoUrl();
+        String videoUrl = recipeStep.getVideoURL();
 
         if (TextUtils.isEmpty(videoUrl)) return;
 
@@ -199,7 +199,7 @@ public class RecipeStepDetailsFragment extends Fragment {
     }
 
     private void setupInstruction() {
-        binding.recipeStepInstruction.setText(recipeStep.getFullDesc());
+        binding.recipeStepInstruction.setText(recipeStep.getDescription());
     }
 
     private void setupNavigationButtons() {

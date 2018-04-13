@@ -6,17 +6,17 @@ import java.io.Serializable;
 
 public class Ingredient implements Serializable {
 
-    private final int quantity;
+    private final String quantity;
     private final String measure;
-    private final String name;
+    private final String ingredient;
 
-    public Ingredient(int quantity, @NonNull String measure, @NonNull String name) {
+    public Ingredient(String quantity, @NonNull String measure, @NonNull String ingredient) {
         this.quantity = quantity;
         this.measure = measure;
-        this.name = name;
+        this.ingredient = ingredient;
     }
 
-    public int getQuantity() {
+    public String getQuantity() {
         return quantity;
     }
 
@@ -24,8 +24,8 @@ public class Ingredient implements Serializable {
         return measure;
     }
 
-    public String getName() {
-        return name;
+    public String getIngredient() {
+        return ingredient;
     }
 
     @SuppressWarnings("SimplifiableIfStatement")
@@ -36,16 +36,16 @@ public class Ingredient implements Serializable {
 
         Ingredient that = (Ingredient) o;
 
-        if (quantity != that.quantity) return false;
+        if (!quantity.equals(that.quantity)) return false;
         if (!measure.equals(that.measure)) return false;
-        return name.equals(that.name);
+        return ingredient.equals(that.ingredient);
     }
 
     @Override
     public int hashCode() {
-        int result = quantity;
+        int result = quantity.hashCode();
         result = 31 * result + measure.hashCode();
-        result = 31 * result + name.hashCode();
+        result = 31 * result + ingredient.hashCode();
         return result;
     }
 
@@ -54,7 +54,7 @@ public class Ingredient implements Serializable {
         return "Ingredient{" +
                 "quantity=" + quantity +
                 ", measure='" + measure + '\'' +
-                ", name='" + name + '\'' +
+                ", ingredient='" + ingredient + '\'' +
                 '}';
     }
 }

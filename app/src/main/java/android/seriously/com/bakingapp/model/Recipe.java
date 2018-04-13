@@ -9,17 +9,17 @@ public class Recipe implements Serializable {
 
     private final int id;
     private final String name;
-    private final String imageUrl;
+    private final String image;
     private final List<Ingredient> ingredients;
-    private final List<RecipeStep> recipeSteps;
+    private final List<RecipeStep> steps;
 
-    public Recipe(int id, @NonNull String name, @NonNull String imageUrl,
-                  @NonNull List<Ingredient> ingredients, @NonNull List<RecipeStep> recipeSteps) {
+    public Recipe(int id, @NonNull String name, @NonNull String image,
+                  @NonNull List<Ingredient> ingredients, @NonNull List<RecipeStep> steps) {
         this.id = id;
         this.name = name;
-        this.imageUrl = imageUrl;
+        this.image = image;
         this.ingredients = ingredients;
-        this.recipeSteps = recipeSteps;
+        this.steps = steps;
     }
 
     public int getId() {
@@ -30,16 +30,16 @@ public class Recipe implements Serializable {
         return name;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getImage() {
+        return image;
     }
 
     public List<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public List<RecipeStep> getRecipeSteps() {
-        return recipeSteps;
+    public List<RecipeStep> getSteps() {
+        return steps;
     }
 
     @SuppressWarnings("SimplifiableIfStatement")
@@ -52,18 +52,18 @@ public class Recipe implements Serializable {
 
         if (id != recipe.id) return false;
         if (!name.equals(recipe.name)) return false;
-        if (!imageUrl.equals(recipe.imageUrl)) return false;
+        if (!image.equals(recipe.image)) return false;
         if (!ingredients.equals(recipe.ingredients)) return false;
-        return recipeSteps.equals(recipe.recipeSteps);
+        return steps.equals(recipe.steps);
     }
 
     @Override
     public int hashCode() {
         int result = id;
         result = 31 * result + name.hashCode();
-        result = 31 * result + imageUrl.hashCode();
+        result = 31 * result + image.hashCode();
         result = 31 * result + ingredients.hashCode();
-        result = 31 * result + recipeSteps.hashCode();
+        result = 31 * result + steps.hashCode();
         return result;
     }
 
@@ -72,9 +72,9 @@ public class Recipe implements Serializable {
         return "Recipe{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
+                ", image='" + image + '\'' +
                 ", ingredients=" + ingredients +
-                ", recipeSteps=" + recipeSteps +
+                ", steps=" + steps +
                 '}';
     }
 }

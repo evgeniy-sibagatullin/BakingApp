@@ -3,15 +3,15 @@ package android.seriously.com.bakingapp.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.seriously.com.bakingapp.model.Ingredient;
 import android.seriously.com.bakingapp.model.Recipe;
-import android.seriously.com.bakingapp.model.RecipeStep;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
+
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,22 +33,6 @@ public final class NetworkUtils {
     private static final int READ_TIMEOUT_MILLIS = 10000;
     private static final int CONNECTION_TIMEOUT_MILLIS = 15000;
     private static final String CONNECTION_METHOD = "GET";
-
-    /* Json keys*/
-    private static final String JSON_RECIPE_KEY_ID = "id";
-    private static final String JSON_RECIPE_KEY_NAME = "name";
-    private static final String JSON_RECIPE_KEY_IMAGE = "image";
-    private static final String JSON_RECIPE_KEY_INGREDIENTS = "ingredients";
-    private static final String JSON_RECIPE_KEY_STEPS = "steps";
-
-    private static final String JSON_INGREDIENT_KEY_QUANTITY = "quantity";
-    private static final String JSON_INGREDIENT_KEY_MEASUERE = "measure";
-    private static final String JSON_INGREDIENT_KEY_INGREDIENT = "ingredient";
-
-    private static final String JSON_RECIPE_STEP_KEY_ID = "id";
-    private static final String JSON_RECIPE_STEP_KEY_SHORT_DESCRIPTION = "shortDescription";
-    private static final String JSON_RECIPE_STEP_KEY_DESCRIPTION = "description";
-    private static final String JSON_RECIPE_STEP_KEY_VIDEO_URL = "videoURL";
 
     private NetworkUtils() {
     }
@@ -137,70 +121,20 @@ public final class NetworkUtils {
     private static List<Recipe> extractRecipes(String jsonResponse) {
         List<Recipe> recipes = new ArrayList<>();
 
-        if (jsonResponse == null || jsonResponse.trim().isEmpty()) return recipes;
+        if (!TextUtils.isEmpty(jsonResponse)) {
+            Gson gson = new Gson();
 
-        try {
-            JSONArray recipesJSONarray = new JSONArray(jsonResponse);
+            try {
+                JSONArray array = new JSONArray(jsonResponse);
 
-            for (int index = 0; index < recipesJSONarray.length(); index++) {
-                JSONObject recipeJSON = recipesJSONarray.getJSONObject(index);
-
-                int recipeId = recipeJSON.getInt(JSON_RECIPE_KEY_ID);
-                String recipeName = recipeJSON.getString(JSON_RECIPE_KEY_NAME);
-                String recipeImageUrl = recipeJSON.getString(JSON_RECIPE_KEY_IMAGE);
-                List<Ingredient> recipeIngredients = extractRecipeIngredients(
-                        recipeJSON.getJSONArray(JSON_RECIPE_KEY_INGREDIENTS));
-                List<RecipeStep> recipeSteps = extractRecipeSteps(
-                        recipeJSON.getJSONArray(JSON_RECIPE_KEY_STEPS));
-
-                recipes.add(new Recipe(recipeId, recipeName, recipeImageUrl, recipeIngredients,
-                        recipeSteps));
+                for (int index = 0; index < array.length(); index++) {
+                    recipes.add(gson.fromJson(array.getString(index), Recipe.class));
+                }
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, "Problem extracting the recipe JSON data", e);
             }
-        } catch (JSONException e) {
-            Log.e(LOG_TAG, "Problem extracting the recipe JSON data", e);
         }
 
         return recipes;
-    }
-
-    private static List<Ingredient> extractRecipeIngredients(JSONArray ingredientsJSONarray) {
-        List<Ingredient> recipeIngredients = new ArrayList<>();
-
-        try {
-            for (int index = 0; index < ingredientsJSONarray.length(); index++) {
-                JSONObject ingredientJSON = ingredientsJSONarray.getJSONObject(index);
-
-                int quantity = ingredientJSON.getInt(JSON_INGREDIENT_KEY_QUANTITY);
-                String measure = ingredientJSON.getString(JSON_INGREDIENT_KEY_MEASUERE);
-                String name = ingredientJSON.getString(JSON_INGREDIENT_KEY_INGREDIENT);
-
-                recipeIngredients.add(new Ingredient(quantity, measure, name));
-            }
-        } catch (JSONException e) {
-            Log.e(LOG_TAG, "Problem extracting the recipe ingredients JSON data", e);
-        }
-
-        return recipeIngredients;
-    }
-
-    private static List<RecipeStep> extractRecipeSteps(JSONArray recipeStepsJSONarray) {
-        List<RecipeStep> recipeSteps = new ArrayList<>();
-
-        try {
-            for (int index = 0; index < recipeStepsJSONarray.length(); index++) {
-                JSONObject recipeStepJSON = recipeStepsJSONarray.getJSONObject(index);
-
-                int id = recipeStepJSON.getInt(JSON_RECIPE_STEP_KEY_ID);
-                String shortDesc = recipeStepJSON.getString(JSON_RECIPE_STEP_KEY_SHORT_DESCRIPTION);
-                String fullDesc = recipeStepJSON.getString(JSON_RECIPE_STEP_KEY_DESCRIPTION);
-                String videoURL = recipeStepJSON.getString(JSON_RECIPE_STEP_KEY_VIDEO_URL);
-
-                recipeSteps.add(new RecipeStep(id, shortDesc, fullDesc, videoURL));
-            }
-        } catch (JSONException e) {
-            Log.e(LOG_TAG, "Problem extracting the recipe steps JSON data", e);
-        }
-
-        return recipeSteps;
     }
 }

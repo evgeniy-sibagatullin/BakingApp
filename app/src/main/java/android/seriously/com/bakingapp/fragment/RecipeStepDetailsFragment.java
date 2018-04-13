@@ -34,6 +34,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 
 import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP;
 import static android.seriously.com.bakingapp.utils.Constants.BUNDLE_KEY_RECIPE_STEP_ID_BEFORE;
@@ -92,6 +93,7 @@ public class RecipeStepDetailsFragment extends Fragment {
                 container, false);
         recipeStep = (RecipeStep) getArguments().get(BUNDLE_KEY_RECIPE_STEP);
 
+        setupThumbnail();
         setupInstruction();
         setupNavigationButtons();
 
@@ -196,6 +198,16 @@ public class RecipeStepDetailsFragment extends Fragment {
         fullScreenDialog.addContentView(binding.videoPlayer,
                 new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
         fullScreenDialog.show();
+    }
+
+    private void setupThumbnail() {
+        if (!TextUtils.isEmpty(recipeStep.getThumbnailURL())) {
+            Picasso.with(getContext()).load(recipeStep.getThumbnailURL())
+                    .placeholder(R.drawable.loading_progress)
+                    .error(R.drawable.ic_error_outline_black_64dp)
+                    .into(binding.recipeStepThumbnail);
+            binding.recipeStepThumbnail.setVisibility(VISIBLE);
+        }
     }
 
     private void setupInstruction() {

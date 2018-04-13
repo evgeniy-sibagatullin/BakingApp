@@ -11,6 +11,15 @@
         android:padding="@dimen/padding_big">
 
         <ImageView
+            android:id="@+id/recipe_step_thumbnail"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/recipe_step_thumbnail_height"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/margin_big"
+            android:contentDescription="@string/recipe_step_thumbnail"
+            android:visibility="gone"/>
+
+        <ImageView
             android:id="@+id/video_loading_progress"
             android:layout_width="@dimen/loading_progress_size"
             android:layout_height="@dimen/loading_progress_size"
